@@ -20,13 +20,14 @@
       </div>
     </div>
     
-    <!-- Gradient overlay for smooth transition -->
-    <div class="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-b from-transparent to-white/20 pointer-events-none z-20"></div>
+    <!-- Enhanced gradient overlay and shadow for smooth transition -->
+    <div class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none z-20"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-1 shadow-lg pointer-events-none z-20"></div>
   </div>
 
-  <div class="flex-1 overflow-y-auto -mt-4">
+  <div class="flex-1 overflow-y-auto -mt-8">
     <ul cdkDropList (cdkDropListDropped)="reorderWorkout($event)" class="pb-8">
-      <div class="h-4"></div> <!-- Spacer for gradient overlap -->
+      <div class="h-8"></div> <!-- Spacer for gradient overlap -->
       @for (workout of workouts(); track workout.id) {
         <li
           cdkDrag
