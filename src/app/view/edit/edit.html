@@ -1,36 +1,42 @@
-<h1 class="text-3xl font-bold text-gray-900 mb-8">Manage Workouts</h1>
+<div class="flex flex-col h-screen">
+  <div class="flex-shrink-0 bg-white z-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Manage Workouts</h1>
 
-<div class="card p-4 my-4">
-  <h2 class="font-semibold text-gray-900 mb-4">New Workout</h2>
-  <div class="flex gap-3">
-    <input
-      type="text"
-      placeholder="e.g. Push, Core, Cardio"
-      class="w-full px-4 placeholder:text-gray-400 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 flex-1"
-      [(ngModel)]="newWorkoutTitle"
-      (keyup.enter)="createNewWorkout()" />
-    <button
-      (click)="createNewWorkout()"
-      [disabled]="!newWorkoutTitle().trim()"
-      class="btn btn-primary px-4">
-      Add
-    </button>
+    <div class="card p-4 mb-4">
+      <h2 class="font-semibold text-gray-900 mb-4">New Workout</h2>
+      <div class="flex gap-3">
+        <input
+          type="text"
+          placeholder="e.g. Push, Core, Cardio"
+          class="w-full px-4 placeholder:text-gray-400 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 flex-1"
+          [(ngModel)]="newWorkoutTitle"
+          (keyup.enter)="createNewWorkout()" />
+        <button
+          (click)="createNewWorkout()"
+          [disabled]="!newWorkoutTitle().trim()"
+          class="btn btn-primary px-4">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-y-auto">
+    <ul cdkDropList (cdkDropListDropped)="reorderWorkout($event)" class="pb-8">
+      @for (workout of workouts(); track workout.id) {
+        <li
+          cdkDrag
+          [cdkDragData]="workout"
+          class="[&.cdk-drag-placeholder]:opacity-30"
+          appWorkoutCard
+          [workout]="workout"></li>
+      } @empty {
+        <li class="text-center my-16 text-gray-500">
+          <svg-icon key="exercise" size="lg" class="text-gray-900" />
+          <h3 class="text-xl font-medium text-gray-900">No workouts yet</h3>
+          <p>Create your first workout to get started!</p>
+        </li>
+      }
+    </ul>
   </div>
 </div>
-
-<ul cdkDropList (cdkDropListDropped)="reorderWorkout($event)">
-  @for (workout of workouts(); track workout.id) {
-    <li
-      cdkDrag
-      [cdkDragData]="workout"
-      class="first:mt-12 [&.cdk-drag-placeholder]:opacity-30"
-      appWorkoutCard
-      [workout]="workout"></li>
-  } @empty {
-    <li class="text-center my-16 text-gray-500">
-      <svg-icon key="exercise" size="lg" class="text-gray-900" />
-      <h3 class="text-xl font-medium text-gray-900">No workouts yet</h3>
-      <p>Create your first workout to get started!</p>
-    </li>
-  }
-</ul>
