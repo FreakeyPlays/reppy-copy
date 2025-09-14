@@ -43,3 +43,4 @@ Thumbs.db
 
 # SVG generator
 /src/app/svg
+.env
