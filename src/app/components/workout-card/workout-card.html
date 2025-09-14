@@ -1,6 +1,70 @@
-<button class="card p-4 my-4 w-full" (click)="isExpanded.set(!isExpanded())">
+<button 
+  class="card p-4 my-4 w-full transition-all duration-200"
+  [class.opacity-60]="workout().isDraft"
+  [class.border-dashed]="workout().isDraft"
+  [class.border-2]="workout().isDraft"
+  [class.border-gray-300]="workout().isDraft"
+  [class.bg-gray-50]="workout().isDraft"
+  (click)="isExpanded.set(!isExpanded())">
   <div class="flex gap-4 items-center justify-between">
-    <h2 class="text-lg font-semibold truncate">
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      @if (workout().isDraft) {
+        <span class="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full font-medium flex-shrink-0">
+          DRAFT
+        </span>
+      }
+      <h2 class="text-lg font-semibold truncate" [class.text-gray-500]="workout().isDraft">
+        {{ workout().title }}
+      </h2>
+    </div>
+    <div class="flex flex-row gap-2">
+      <a
+        [routerLink]="`/edit/${workout().id}`"
+        class="btn btn-secondary px-4 py-2 inline-flex items-center justify-center">
+        <svg-icon key="edit" size="sm" />
+      </a>
+      <button
+        (click)="toggleDraftMode($event)"
+        class="btn btn-secondary px-4 py-2 inline-flex items-center justify-center"
+        [class.bg-orange-100]="workout().isDraft"
+        [class.text-orange-600]="workout().isDraft"
+        [class.hover:bg-orange-200]="workout().isDraft">
+        <svg-icon
+          [key]="workout().isDraft ? 'visibility-off' : 'visibility'"
+          size="sm" />
+      </button>
+      <button
+        (click)="deleteWorkout(workout().id!)"
+        class="btn btn-danger px-4 py-2 inline-flex items-center justify-center">
+        <svg-icon key="delete" size="sm" />
+      </button>
+    </div>
+  </div>
+
+  <hr class="my-2 border-gray-200" />
+
+  <ul
+    [attr.aria-expanded]="isExpanded()"
+    class="h-0 aria-expanded:h-auto transition-all duration-300 ease-in-out overflow-hidden">
+    @for (exercise of exercises; track exercise.id) {
+      <!-- TODO: Add exercise list -->
+    } @empty {
+      <li>
+        <h3 class="font-semibold" [class.text-gray-400]="workout().isDraft">No exercises</h3>
+        <p [class.text-gray-400]="workout().isDraft">Edit this workout and add an Exercise</p>
+      </li>
+    }
+  </ul>
+
+  <div class="flex items-center justify-center">
+    <svg-icon
+      key="keyboard-arrow-up"
+      [class]="
+        `transition-all ease-in-out ${isExpanded() ? '' : '-rotate-180'} ${workout().isDraft ? 'text-gray-400' : ''}`
+      "
+      size="md" />
+  </div>
+</button>
       {{ workout().title }}
     </h2>
     <div class="flex flex-row gap-2">
